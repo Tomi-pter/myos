@@ -1,38 +1,145 @@
-.App {
-  text-align: center;
+main {
+    display: flex;
+    flex-direction: column;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+header img {
+    width: 40px;
+    height: 40px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+header button {
+    background: transparent;
+    border: none;
+    position: relative;
 }
 
-.App-link {
-  color: #61dafb;
+header span {
+    border-radius: 50%;
+    padding: .5px 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: white;
+    background-color: black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+    cursor: pointer;
+}
+
+.search {
+    margin: auto;
+}
+
+label {
+    margin-right: .5rem;
+}
+
+.search input {
+    padding: .25rem;
+}
+
+.itemsContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 90vw;
+    margin: 0 auto;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: .5rem;
+    margin: 1rem 0;
+}
+
+.item img {
+    max-width: 100px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.display {
+    padding: .5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.display img {
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.cartContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(0, 0, 0, .5);
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    display: flex;
+    overflow: hidden;
+}
+
+.cartDisplay {
+    background-color: white;
+    width: 80vw;
+    height: 80vh;
+    margin: auto;
+    padding: 1.5rem;
+    border: 1px solid black;
+    z-index: 3;
+    position: relative;
+}
+
+.cartDisplay section {
+    overflow: scroll;
+    height: 67%;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: .5rem 1rem;
+}
+
+.orders {
+    height: 17%;
+    margin-top: .5rem;
+    display: flex;
+    overflow: scroll;
+}
+
+.orders div {
+    border: 1px solid black;
+    width: 15%;
+    padding: .25rem;
+    margin-inline: .25rem;
+}
+
+@media screen and (min-width: 641px) {
+    .itemsContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 1rem;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .itemsContainer {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
 }
