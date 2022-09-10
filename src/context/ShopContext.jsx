@@ -19,14 +19,6 @@ export const ShopProvider = ({ children }) => {
     fetchItems();
   }, []);
 
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0");
-  let yyyy = today.getFullYear();
-
-  today = yyyy + "-" + mm + "-" + dd;
-  console.log(today);
-
   const addToCart = (title, price, image, productId) => {
     let duplicate;
     let cart = { title, price, image, productId, quantity: 1 };
@@ -59,6 +51,13 @@ export const ShopProvider = ({ children }) => {
       quantity,
     }));
 
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0");
+    let yyyy = today.getFullYear();
+
+    today = yyyy + "-" + mm + "-" + dd;
+
     const addOrder = async () => {
       const res = await fetch("https://fakestoreapi.com/carts", {
         method: "POST",
@@ -73,6 +72,8 @@ export const ShopProvider = ({ children }) => {
       // Data is an object with a property id which is always equals 11
       // so instead of using the ID, i would use UUIV to generate a new order ID instead
       console.log(data);
+
+      // I would normally store the orders but I commented that out
       // setOrders([...orders, data]);
       let orderId = uuidv4();
       setOrders([...orders, { cartItems, orderId }]);
