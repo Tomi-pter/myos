@@ -3,6 +3,7 @@ import "../App.css";
 import cart from "../assets/cart.svg";
 import ShopContext from "../context/ShopContext";
 import Cart from "./Cart";
+import Loader from "./Loader";
 
 function Shop() {
   const {
@@ -13,6 +14,7 @@ function Shop() {
     handleSearchChange,
     handleCartClicked,
     cartClicked,
+    isLoading,
   } = useContext(ShopContext);
 
   return (
@@ -46,7 +48,9 @@ function Shop() {
               )
               .map(({ title, price, description, image, id }) => (
                 <div key={id} className="item">
-                  <img src={image} alt={image} />
+                  <div className="itemImage">
+                    <img src={image} alt={image} />
+                  </div>
                   <h3>{title}</h3>
                   <p>{description}</p>
                   <span>${price}</span>
@@ -57,7 +61,9 @@ function Shop() {
               ))
           : items.map(({ title, price, description, image, id }) => (
               <div key={id} className="item">
-                <img src={image} alt={image} />
+                <div className="itemImage">
+                  <img src={image} alt={image} />
+                </div>
                 <h3>{title}</h3>
                 <p>{description}</p>
                 <span>${price}</span>
@@ -68,6 +74,7 @@ function Shop() {
             ))}
       </div>
       {cartClicked && <Cart />}
+      {isLoading && <Loader />}
     </main>
   );
 }

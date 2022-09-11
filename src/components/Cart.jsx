@@ -7,23 +7,27 @@ function Cart() {
     useContext(ShopContext);
 
   const [email, setEmail] = useState("");
-
-  // eslint-disable-next-line no-useless-escape
-  const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  const [error, setError] = useState("");
 
   const completeClicked = (cart) => {
+    // eslint-disable-next-line no-useless-escape
+    const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (email.length === 0) {
-      document.querySelector(".error").textContent =
-        "please provide your email";
-    } else {
-      if (email.match(pattern)) {
-        handleOrderCompleted(cart);
-        setEmail("");
-      } else {
-        document.querySelector(".error").textContent =
-          "please provide a valid email";
-      }
+      setError("please provide your email");
+      return;
     }
+    if (!email.match(pattern)) {
+      setError("please provide a valid email");
+      return;
+    }
+    if (cart.length === 0) {
+      setError("you cannot checkout an empty cart");
+      return;
+    }
+
+    handleOrderCompleted(cart);
+    setEmail("");
+    setError("");
   };
 
   return (
@@ -33,8 +37,10 @@ function Cart() {
           {cartItems.length > 0 ? (
             cartItems.map(({ title, price, image, quantity }, index) => (
               <div className="display" key={index}>
-                <img src={image} alt={image} />
-                <span>{title.slice(0, 35)}...</span>
+                <div>
+                  <img src={image} alt={image} />
+                </div>
+                <p>{title.slice(0, 35)}...</p>
                 <span>${price}</span>
                 <span>x{quantity}</span>
               </div>
@@ -61,10 +67,13 @@ function Cart() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <button onClick={() => completeClicked(cartItems)}>
+          <button
+            className="submitButton"
+            onClick={() => completeClicked(cartItems)}
+          >
             Complete Order
           </button>
-          <span className="error"></span>
+          <span className="error">{error}</span>
         </div>
         <div className="orders">
           {orders.map(({ orderId }) => (

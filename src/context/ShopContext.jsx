@@ -8,12 +8,21 @@ export const ShopProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [itemsSearch, setItemsSearch] = useState("");
   const [orders, setOrders] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [cartClicked, setCartClicked] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchItems = async () => {
-      const res = await fetch("https://fakestoreapi.com/products");
-      const data = await res.json();
-      setItems(data);
+      try {
+        const res = await fetch("https://fakestoreapi.com/products");
+        const data = await res.json();
+        setItems(data);
+      } catch (e) {
+        alert("Error Loading Products");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchItems();
@@ -39,8 +48,6 @@ export const ShopProvider = ({ children }) => {
     setItemsSearch(e.target.value);
   };
 
-  const [cartClicked, setCartClicked] = useState(false);
-
   const handleCartClicked = () => {
     setCartClicked(!cartClicked);
   };
@@ -59,25 +66,32 @@ export const ShopProvider = ({ children }) => {
     today = yyyy + "-" + mm + "-" + dd;
 
     const addOrder = async () => {
-      const res = await fetch("https://fakestoreapi.com/carts", {
-        method: "POST",
-        body: JSON.stringify({
-          userId: uuidv4(),
-          date: today,
-          products: products,
-        }),
-      });
-      const data = await res.json();
+      setLoading(true);
+      try {
+        const res = await fetch("https://fakestoreapi.com/carts", {
+          method: "POST",
+          body: JSON.stringify({
+            userId: uuidv4(),
+            date: today,
+            products: products,
+          }),
+        });
+        const data = await res.json();
 
-      // Data is an object with a property id which is always equals 11
-      // so instead of using the ID, i would use UUIV to generate a new order ID instead
-      console.log(data);
+        // Data is an object with a property id which is always equals 11
+        // so instead of using the ID, i would use UUIV to generate a new order ID instead
+        console.log(data);
 
-      // I would normally store the orders but I commented that out
-      // setOrders([...orders, data]);
-      let orderId = uuidv4();
-      setOrders([...orders, { cartItems, orderId }]);
-      setCartItems([]);
+        // I would normally store the orders but I commented that out
+        // setOrders([...orders, data]);
+        let orderId = uuidv4();
+        setOrders([...orders, { cartItems, orderId }]);
+        setCartItems([]);
+      } catch (e) {
+        alert("Error Loading Products");
+      } finally {
+        setLoading(false);
+      }
     };
 
     addOrder();
@@ -87,6 +101,7 @@ export const ShopProvider = ({ children }) => {
     <ShopContext.Provider
       value={{
         items,
+        isLoading,
         cartItems,
         itemsSearch,
         cartClicked,
