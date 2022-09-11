@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../App.css";
 import cart from "../assets/cart.svg";
 import ShopContext from "../context/ShopContext";
@@ -39,6 +39,27 @@ function Shop() {
         />
       </div>
       <div className="itemsContainer">
+        {items
+          .filter(
+            ({ title, description }) =>
+              title.toLowerCase().includes(itemsSearch.toLowerCase()) ||
+              description.toLowerCase().includes(itemsSearch.toLowerCase())
+          )
+          .map(({ title, price, description, image, id }) => (
+            <div key={id} className="item">
+              <div className="itemImage">
+                <img src={image} alt={image} />
+              </div>
+              <h3>{title}</h3>
+              <p className="truncate">{description}</p>
+              <span>${price}</span>
+              <button onClick={() => addToCart(title, price, image, id)}>
+                Add to cart
+              </button>
+            </div>
+          ))}
+      </div>
+      {/* <div className="itemsContainer">
         {itemsSearch
           ? items
               .filter(
@@ -52,7 +73,7 @@ function Shop() {
                     <img src={image} alt={image} />
                   </div>
                   <h3>{title}</h3>
-                  <p>{description}</p>
+                  <p className="truncate">{description}</p>
                   <span>${price}</span>
                   <button onClick={() => addToCart(title, price, image, id)}>
                     Add to cart
@@ -65,14 +86,14 @@ function Shop() {
                   <img src={image} alt={image} />
                 </div>
                 <h3>{title}</h3>
-                <p>{description}</p>
+                <p className="truncate">{description}</p>
                 <span>${price}</span>
                 <button onClick={() => addToCart(title, price, image, id)}>
                   Add to cart
                 </button>
               </div>
             ))}
-      </div>
+      </div> */}
       {cartClicked && <Cart />}
       {isLoading && <Loader />}
     </main>
